@@ -221,7 +221,7 @@ def generate_image_response(message_history, transcription):
 
     elif config["VISION_MODEL"] == 'vlm':
         os.system(f"espeak 'Taking a picture.'")
-        os.system("libcamera-still --width 180 --height 180 -o images/image.jpg")
+        os.system("libcamera-still --width 128 --height 128 -o images/image.jpg")
 
         os.system(f"espeak 'Photo taken. Now analyzing.'")
         vlm_output_start = "per image patch)"

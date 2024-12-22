@@ -7,8 +7,8 @@ base_config = {
     "PHRASE_TIME_LIMIT": 7,
     "USE_FASTER_WHISPER": True,
     "VISION_MODEL": "vlm",
-    "LOCAL_MODEL": "gemma2:2b-instruct-q4_0",
-    "RAG_MODEL": "gemma2:2b-instruct-q4_0",
+    "LOCAL_MODEL": "gemma2:2b-instruct-q4_K_M",
+    "RAG_MODEL": "gemma2:2b-instruct-q4_K_M",
     "STORE_CONVERSATIONS": True,  # to save in case we you want to analyze later
     "CONDENSE_MESSAGES": True,  # for faster response time
     # number of messages to keep in memory (odd #s work best)
