@@ -2,11 +2,16 @@ from transformers import AutoTokenizer
 from transformers import AutoModelForSequenceClassification
 from numpy import exp, sum
 
-key_tools = ['take_picture', 'no_tool_needed',
-             'check_news', 'check_weather', 'play_spotify']
+key_tools = [
+    "take_picture",
+    "no_tool_needed",
+    "check_news",
+    "check_weather",
+    "play_spotify",
+]
 
 
-TOOL_THRESHOLD = .95
+TOOL_THRESHOLD = 0.95
 
 
 def get_id2tool_name(id, key_tools):
@@ -18,13 +23,12 @@ def softmax(x):
 
 
 def remove_any_non_alphanumeric_characters(text):
-    return ''.join(e for e in text if e.isalnum() or e.isspace())
+    return "".join(e for e in text if e.isalnum() or e.isspace())
 
 
 def load_model():
     tokenizer = AutoTokenizer.from_pretrained("google-bert/bert-base-uncased")
-    model = AutoModelForSequenceClassification.from_pretrained(
-        "nkasmanoff/tool-bert")
+    model = AutoModelForSequenceClassification.from_pretrained("nkasmanoff/tool-bert2")
 
     model.eval()
     return model, tokenizer
@@ -41,7 +45,7 @@ def predict_tool(question, model, tokenizer):
     probability = softmax(logits[0]).max()
 
     if probability < TOOL_THRESHOLD:
-        return 'no_tool_needed'
+        return "no_tool_needed"
     return get_id2tool_name(logits.argmax().item(), key_tools)
 
 
@@ -50,8 +54,21 @@ if __name__ == "__main__":
 
     model, tokenizer = load_model()
 
-    questions = ["Who is the best captain in star trek", "tell me a joke",
-                 'take a photo', 'check the weather', 'play some music', 'please tell me a joke', 'What is the news', 'When did the US declare independence', 'What is the capital of France', 'What is the capital of the United States', 'What is the capital of the United States of America',]
+    questions = [
+        "Who is the best captain in star trek",
+        "tell me a joke",
+        "take a photo",
+        "check the weather",
+        "play some music",
+        "please tell me a joke",
+        "What is the news",
+        "When did the US declare independence",
+        "What is the capital of France",
+        "What is the capital of the United States",
+        "What is the capital of the United States of America",
+        "Do I need a sweatshirt today?",
+        "What should I wear outside",
+    ]
     for question in questions:
 
         start = time.time()
@@ -60,4 +77,4 @@ if __name__ == "__main__":
         stop = time.time()
 
         print(f"Time taken: {stop-start}")
-        print('-----')
+        print("-----")

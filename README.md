@@ -46,7 +46,7 @@ The system is designed to be a fun project that can be a _somewhat_ helpful AI a
 
 ### Why isn't this an app?
 
-The main reason for this is that I wanted to create a voice assistant that is completely offline and doesn't require any internet connection. This is mostly because I wanted to ensure that the user's privacy is protected and that the user's data is not being sent to any third party servers. I also want to know how capable voice assistants can be in a completely offline setting.
+The main reason for this is that I wanted to create a voice assistant that is completely offline and how efficient it can be on the relatively inexpensive hardware of a Raspberry Pi. I figure the hardest part of this project was to make it run fast, so if I can get it working like this, something similar could be done on increasingly more powerful hardware while only being faster.
 
 ## Usage
 
@@ -62,7 +62,7 @@ or
 python main_button.py
 ```
 
-Once the program is running, you can start a conversation with the assistant by saying the wake word. The default wake words are "raspberry", "barry", "razbear" (aka things that the transcription might have accidentally picked up), but you can change this in the `config.py` file. If the button version is in place, you can press the button to start a conversation, or interrupt the assistant at any time.
+Once the program is running, you can start a conversation with the assistant by saying the wake word. The default wake words are "raspberry", "barry", "razbear" (aka things that the transcription might have accidentally picked up), but you can change this in the `config.py` file to anything you want.If the button version is in place, you can press the button to start a conversation, or interrupt the assistant at any time. Please note that these options, like what the wake word is, what the GPIO button is, are all things that I set up for my own use. Feel free to change them!
 
 ## Setup
 
@@ -75,25 +75,32 @@ sudo docker-compose build
 sudo docker-compose up
 ```
 
-Some notes. This is a recent addition, so may not work perfectly. I have it working well in the non-button version, not sure how to get GPIO access passed to the container.
+This is a recent addition, so may not work perfectly. It also only works for the wake-word version, not sure how to get GPIO access passed to the container.
 
 ### Software
 
-To keep this system as fast and lean as possible, we use cpp implementations of the audio transcription. This is done with the wonderful library [whisper.cpp](https://github.com/ggerganov/whisper.cpp).
+To keep this system as fast and lean as possible, we use cpp implementations where possible. Some examples are [whisper.cpp](https://github.com/ggerganov/whisper.cpp) for audio transcription and [llama.cpp](https://github.com/ggerganov/llama.cpp) for the vision capabilities.
 
-Please clone the repository wherever you like, and add its path to the `config.py` file.
+Please clone these repositories wherever you like, and add its path to the `config.py` file.
 
 Once cloned, please follow the setup instructions to get the models running. Some pointers are given below:
 
 #### Tools
 
-To make pi-card a bit more like a real assistant, there are a couple tools it has access to. These are done through [tool-bert](https://huggingface.co/nkasmanoff/tool-bert), a fine-tuned version of BERT deciding when to access external info. More info on how to make a version of this can be found [here](https://github.com/nkasmanoff/tool-bert)
+To make pi-card a bit more like a real assistant, there are a couple tools it has access to. These are done through [tool-bert](https://huggingface.co/nkasmanoff/tool-bert2), a fine-tuned version of BERT deciding when to access external info. More info on how to make a version of this can be found [here](https://github.com/nkasmanoff/tool-bert)
 
 The model is easy to install, but to enable tool access, take a look at .env.example file for context on what keys and secrets are necessary.
 
 For whisper.cpp, you will need to follow the quick-start guide in the [README](https://github.com/ggerganov/whisper.cpp?tab=readme-ov-file#quick-start).
 
-Since this project is depending on openly available models, depending on the ones used, the limitations of this assistant will be the same as limitations of the models.
+##### Vision Model
+
+If you can hook a camera up to your Raspberry Pi, you can enable the vision model. If you have it, you can ask pi-card to snap a photo, and describe what it sees.
+
+This is done by setting the `vision_model` to `vlm` in the `config.py` file. At the same time, you'll also need to download the appropriate models for this, which is Qwen2-VL-2B-Instruct.
+
+Since this model has a dynamic input image token size, by making the snapped photo smaller, we can speed up the inference time. There's a lot of potential for this and using VLMs on the Raspberry Pi.
+For info on how to download llama.cpp, the quants, and execute the code, please see [here](https://colab.research.google.com/drive/1RBb8Iw3GNWx2jhb3n7hKyHJHfHVICivz?usp=sharing).
 
 ### Hardware
 
@@ -125,14 +132,14 @@ Feel free to use your own, this is what worked for me!
 Coming soon, but I plan to add notes here on things currently implemented, and what can be done in the future. Some quick notes on it are below. I've started to make a notion board to keep track of things, but it's not complete yet. Check it out [here](https://marble-laugh-dd5.notion.site/14195743cced80229c3cddfd0cd5a750?v=a673ae0424b445d9983b71774a943b0f).
 
 -   [x] Basic conversation capabilities
--   [ ] Camera capabilities
+-   [x] Camera capabilities
 -   [x] Benchmark response times
 -   [x] Test overclocking
 -   [x] Figure out how to speed up whisper times
 -   [x] Add ability to interrupt assistant, and ask new question
 -   [x] Use a custom tuned model for the assistant
 -   [ ] Improved tutorials & videos
--   [ ] Improve external service function model (tool-bert)
+-   [x] Improve external service function model (tool-bert)
 -   [x] Test when connected to a portable power source
 -   [ ] Create optional model generation using entropix
 -   [x] Dockerize repo for testing on more devices
