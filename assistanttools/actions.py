@@ -225,7 +225,7 @@ def generate_image_response(message_history, transcription):
 
         os.system(f"espeak 'Photo taken. Now analyzing.'")
         vlm_output_start = "per image patch)"
-        prompt = '"Please describe the image in detail."'
+        prompt = '"Please describe this image."'
         word = ""
         response = ""
         is_ready_to_print = False
