@@ -84,10 +84,10 @@ ENV MOONDREAM_PATH=/app/moondream-quants/
 RUN git clone https://github.com/ggml-org/whisper.cpp.git && \
     cd whisper.cpp && \
     make && \
-    chmod +x main
+    chmod +x build
 
 # Create a symbolic link to make it accessible
-RUN ln -s /app/whisper.cpp/main /usr/local/bin/whisper
+RUN ln -s /app/whisper.cpp/build /usr/local/bin/whisper
 
 # Download whisper tiny model
 RUN cd whisper.cpp/models && \
