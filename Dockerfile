@@ -34,18 +34,19 @@ RUN apt-get update && apt-get install -y \
 ENV AUDIODEV=plughw:2,0  
 ENV AUDIODRIVER=alsa
 ENV PULSE_SERVER=/run/user/1000/pulse/native
-ENV ALSA_CARD=2  
+ARG ALSA_CARD_NO=2
+ENV ALSA_CARD=${ALSA_CARD_NO}
 
 # Create ALSA configuration for USB Audio
-RUN echo 'pcm.!default { \n\
+RUN echo "pcm.!default { \n\
     type plug \n\
-    slave.pcm "hw:2,0" \n\
+    slave.pcm \"hw:${ALSA_CARD},0\" \n\
     }\n\
     \n\
     ctl.!default { \n\
     type hw \n\
-    card 2 \n\
-    }' > /etc/asound.conf
+    card ${ALSA_CARD} \n\
+    }" > /etc/asound.conf
 
 # Configure espeak-specific environment
 ENV ESPEAK_AUDIO_OUTPUT=alsa
