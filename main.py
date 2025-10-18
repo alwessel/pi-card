@@ -15,7 +15,7 @@ if os.getenv("DOCKERIZED", False):
 if config["USE_FASTER_WHISPER"]:
     from faster_whisper import WhisperModel
 
-    model = WhisperModel("tiny.en")
+    model = WhisperModel("tiny")
 
     def transcribe_audio(file_path):
         segments, _ = model.transcribe(file_path)

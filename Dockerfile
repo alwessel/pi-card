@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM debian:latest
+FROM debian:bookworm
 
 # Install all system dependencies in one layer
 RUN apt-get update && apt-get install -y \
@@ -50,7 +50,7 @@ RUN echo 'pcm.!default { \n\
 # Configure espeak-specific environment
 ENV ESPEAK_AUDIO_OUTPUT=alsa
 ENV ESPEAK_RATE=175
-ENV ESPEAK_VOICE=en
+ENV ESPEAK_VOICE=de
 
 # Set working directory
 WORKDIR /app
@@ -80,7 +80,7 @@ ENV WHISPER_CPP_PATH=/app/whisper.cpp/
 ENV MOONDREAM_PATH=/app/moondream-quants/
 
 # Clone and build whisper.cpp
-RUN git clone https://github.com/ggerganov/whisper.cpp.git && \
+RUN git clone https://github.com/ggml-org/whisper.cpp.git && \
     cd whisper.cpp && \
     make && \
     chmod +x main
@@ -90,7 +90,7 @@ RUN ln -s /app/whisper.cpp/main /usr/local/bin/whisper
 
 # Download whisper tiny model
 RUN cd whisper.cpp/models && \
-    ./download-ggml-model.sh tiny.en
+    ./download-ggml-model.sh tiny
 
 
 # Create entrypoint script
