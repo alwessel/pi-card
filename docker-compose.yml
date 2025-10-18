@@ -2,9 +2,10 @@ version: '3.8'
 
 services:
   picard:
-    build: .
-    args:
-      ALSA_CARD_NO: 0  # see aplay -l to find your USB audio card number   
+    build: 
+      context: .
+      args:
+        ALSA_CARD_NO: 2  # Change this value to override the ALSA card
     #privileged: true # Needed for GPIO access
     devices:
       - "/dev/snd:/dev/snd" # For audio access
