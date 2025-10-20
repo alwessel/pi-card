@@ -31,22 +31,20 @@ RUN apt-get update && apt-get install -y \
 
 # Set audio environment variables for USB Audio (card 2)
 # Note these are hardcoded for the USB Audio device and where you plug it in (check aplay -l)
-ENV AUDIODEV=plughw:2,0  
+ENV AUDIODEV=plughw:0,0 
 ENV AUDIODRIVER=alsa
 ENV PULSE_SERVER=/run/user/1000/pulse/native
-ARG ALSA_CARD_NO=2
-ENV ALSA_CARD=${ALSA_CARD_NO}
 
 # Create ALSA configuration for USB Audio
-RUN echo "pcm.!default { \n\
-    type plug \n\
-    slave.pcm \"hw:${ALSA_CARD},0\" \n\
-    }\n\
-    \n\
-    ctl.!default { \n\
-    type hw \n\
-    card ${ALSA_CARD} \n\
-    }" > /etc/asound.conf
+RUN echo "pcm.!default {\n\
+    type plug\n\
+    slave.pcm \"hw:0,0\"\n\
+}\n\
+\n\
+ctl.!default {\n\
+    type hw\n\
+    card 0\n\
+}" > /etc/asound.conf
 
 # Configure espeak-specific environment
 ENV ESPEAK_AUDIO_OUTPUT=alsa
@@ -68,9 +66,6 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 # Install Python dependencies in the virtual environment
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install RPi.GPIO
-
-
 
 # Create necessary directories
 
@@ -84,15 +79,14 @@ ENV MOONDREAM_PATH=/app/moondream-quants/
 RUN git clone https://github.com/ggml-org/whisper.cpp.git && \
     cd whisper.cpp && \
     make && \
-    chmod +x build
+    chmod +x build/bin/whisper-cli
 
 # Create a symbolic link to make it accessible
-RUN ln -s /app/whisper.cpp/build /usr/local/bin/whisper
+RUN ln -s /app/whisper.cpp/build/bin/whisper-cli /usr/local/bin/whisper
 
 # Download whisper tiny model
 RUN cd whisper.cpp/models && \
     ./download-ggml-model.sh tiny
-
 
 # Create entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/

@@ -5,7 +5,7 @@ base_config = {
     "TIMEOUT": 10,
     # longest amount of time the allow a phrase to continue before stopping the recording
     "PHRASE_TIME_LIMIT": 7,
-    "USE_FASTER_WHISPER": True,
+    "USE_FASTER_WHISPER": False,
     "VISION_MODEL": "vlm",
     "LOCAL_MODEL": "gemma2:2b-instruct-q4_K_M",
     "RAG_MODEL": "gemma2:2b-instruct-q4_K_M",
@@ -17,9 +17,9 @@ base_config = {
 }
 
 config = {
-    "SOUNDS_PATH": "/home/nkasmanoff/Desktop/pi-card/sounds/",
-    "WHISPER_CPP_PATH": "../whisper.cpp/",
-    "WHISPER_MODEL_PATH": "/home/nkasmanoff/Desktop/whisper.cpp/models/ggml-tiny.bin",
+    "SOUNDS_PATH": "/home/awes/pi-card/sounds/",
+    "WHISPER_CPP_PATH": "/home/awes/whisper.cpp/build/bin/",
+    "WHISPER_MODEL_PATH": "/home/awes/whisper.cpp/models/ggml-tiny.bin",
     "LLAMA_CPP_PATH": "../llama.cpp/",
     "VLM_MMPROJ_PATH": "../llama.cpp/mmproj-Qwen2-VL-2B-Instruct-f16.gguf",
     "VLM_MODEL_PATH": "../llama.cpp/Qwen2-VL-2B-Instruct-Q4_K_M.gguf",
@@ -27,8 +27,8 @@ config = {
 
 
 docker_config = {
-    "SOUNDS_PATH": "/app/sounds/",
-    "WHISPER_CPP_PATH": "/app/whisper.cpp/",
+    "SOUNDS_PATH": "/app/src/sounds/",
+    "WHISPER_CPP_PATH": "",
     "WHISPER_MODEL_PATH": "/app/whisper.cpp/models/ggml-tiny.bin",
     "LLAMA_CPP_PATH": "/app/llama.cpp/",
     "VLM_MMPROJ_PATH": "/app/llama.cpp/mmproj-Qwen2-VL-2B-Instruct-f16.gguf",

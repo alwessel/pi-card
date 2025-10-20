@@ -2,10 +2,7 @@ version: '3.8'
 
 services:
   picard:
-    build: 
-      context: .
-      args:
-        ALSA_CARD_NO: 2  # Change this value to override the ALSA card
+    build: .
     #privileged: true # Needed for GPIO access
     devices:
       - "/dev/snd:/dev/snd" # For audio access
